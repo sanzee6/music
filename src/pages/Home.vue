@@ -1,10 +1,9 @@
 <template>
   <div class="home">
-    <!--轮播图-->
-    <swiper></swiper>
+    <swiper />
     <div class="section" v-for="(item,index) in songsList" :key="index">
       <div class="section-title">{{item.name}}</div>
-      <contentList :contentList="item.list"></contentList>
+      <content-list :contentList="item.list"></content-list>
     </div>
   </div>
 </template>
@@ -51,5 +50,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/css/home.scss';
+  @import '../assets/css/home.scss';
 </style>

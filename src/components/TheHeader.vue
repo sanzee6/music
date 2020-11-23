@@ -34,7 +34,7 @@ export default {
   data () {
     return {
       navMsg: [], // 导航栏
-      keywords // 搜索关键字 gai de
+      keywords: '' // 搜索关键字 gai de
     }
   },
   computed: {

@@ -13,7 +13,7 @@
         </div>
       </li>
       <li v-for="(item,index) in songList" :key="index">
-        <div class="song-item">
+        <div class="song-item" @click="toplay(item.id,item.url, item.pic, index, item.name, item.lyric)">
           <span class="item-index">{{index+1}}</span>
           <span class="item-title">{{replaceFName(item.name)}}</span>
           <span class="item-name">{{replaceLName(item.name)}}</span>
