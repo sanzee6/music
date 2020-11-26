@@ -10,6 +10,9 @@
     <scroll-top></scroll-top>
     <!--脚部-->
     <the-footer></the-footer>
+
+    <!--播放菜单-->
+    <the-aside></the-aside>
   </div>
 </template>
 
@@ -19,9 +22,11 @@ import ScrollTop from './components/ScrollTop'
 import TheFooter from './components/TheFooter'
 import SongAudio from './components/SongAudio'
 import PlayBar from './components/PlayBar'
+import TheAside from './components/TheAside'
 export default {
   name: 'App',
   components: {
+    TheAside,
     PlayBar,
     TheFooter,
     ScrollTop,
