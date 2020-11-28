@@ -1,5 +1,10 @@
 <template>
-  <div class="play-bar">
+  <div class="play-bar" :class="{show:!toggle}">
+    <div @click="toggle=!toggle" class="item-up" :class="{turn: !toggle}">
+      <svg class="icon">
+        <use xlink:href="#icon-jiantou-xia-cuxiantiao"></use>
+      </svg>
+    </div>
     <div class="kongjian">
       <!--上一首歌-->
       <div class="item" @click="prev">
@@ -21,7 +26,7 @@
       </div>
 
       <!--歌曲图片-->
-      <div class="item-img">
+      <div class="item-img" @click="toLyric">
         <img :src="picUrl">
       </div>
 
@@ -68,7 +73,7 @@
         </div>
 
         <!--下载-->
-        <div class="item">
+        <div class="item" @click="download">
           <svg class="icon">
             <use xlink:href="#icon-xiazai"></use>
           </svg>
@@ -88,6 +93,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {download} from '../api/index'
 
 export default {
   data () {
@@ -98,7 +104,8 @@ export default {
       progressLength: 0, // 進度條縂長度
       mouseStartX: 0, // 拖拽開始位置
       tag: false, // 拖拽开始结束的标志，拖拽时变true
-      volume: 50 // 默认音量为50
+      volume: 50, // 默认音量为50
+      toggle: true // 显示隐藏播放器页面
     }
   },
   name: 'PlayBar',
@@ -277,7 +284,7 @@ export default {
         this.$store.commit('setPicUrl', this.$store.state.configure.HOST + this.listOfSongs[this.listIndex].pic)
         this.$store.commit('setTitle', this.replaceFName(this.listOfSongs[this.listIndex].name)) //  歌名
         this.$store.commit('setArtist', this.replaceLName(this.listOfSongs[this.listIndex].name)) // 歌手名
-        this.$store.commit('setLyric', this.listOfSongs[this.listIndex].lyric)
+        this.$store.commit('setLyric', this.parseLyric(this.listOfSongs[this.listIndex].lyric))
       }
     },
 
@@ -288,6 +295,62 @@ export default {
     replaceFName (str) {
       let arr = str.split('-')
       return arr[1]
+    },
+    // 解析歌词
+    parseLyric (text) {
+      let lines = text.split('\n') // 将歌词按行分解成数组
+      let pattern = /\[\d{2}:\d{2}.(\d{3}|\d{2})\]/g // 时间格式的正则表达式
+      let result = [] // 返回值
+      // 对于歌词格式不对的直接返回
+      if (!(/\[.+\]/.test(text))) {
+        return [[0, text]]
+      }
+      // 去掉前面格式不正确的行
+      while (!pattern.test(lines[0])) {
+        lines = lines.slice(1)
+      }
+      // 遍历每一行，形成一个每行带着俩元素的数组，第一个元素是以秒为计算单位的时间，第二个元素是歌词
+      for (let item of lines) {
+        let time = item.match(pattern) // 存前面的时间段
+        let value = item.replace(pattern, '')// 存后面的歌词
+        for (let item1 of time) {
+          let t = item1.slice(1, -1).split(':') // 取出时间，换算成数组
+          if (value !== '') {
+            result.push([parseInt(t[0], 10) * 60 + parseFloat(t[1]), value])
+          }
+        }
+      }
+      // 按照第一个元素--时间--排序
+      result.sort(function (a, b) {
+        return a[0] - b[0]
+      })
+      return result
+    },
+    // 转向歌词页面
+    toLyric () {
+      this.$router.push({path: `/lyric`})
+    },
+    // 下载音乐
+    download () {
+      download(this.url)
+        .then(res => {
+          let content = res.data
+          let eleLink = document.createElement('a')
+          eleLink.download = `${this.artist}-${this.title}.mp3`
+          eleLink.style.display = 'none'
+          // 把字符内容转换成blob地址
+          let blob = new Blob([content])
+          eleLink.href = URL.createObjectURL(blob)
+          // 把链接地址加到document里
+          document.body.appendChild(eleLink)
+          // 触发点击
+          eleLink.click()
+          // 然后移除掉这个新加的控件
+          document.body.removeChild(eleLink)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 

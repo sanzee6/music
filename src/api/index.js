@@ -1,5 +1,6 @@
 import {get, post} from './http'
 
+import axios from 'axios'
 // ============歌手相关================
 // 查询歌手
 export const getAllSinger = () => get(`singer/allSinger`)
@@ -23,3 +24,14 @@ export const listSongDetail = (songListId) => get(`listSong/detail?songListId=${
 // ============用户相关================
 // 查询用户
 export const getAllConsumer = () => get(`consumer/allConsumer`)
+// 注册
+export const SignUp = (params) => post(`/consumer/add`, params)
+// 登录
+export const loginIn = (params) => post(`/consumer/login`, params)
+
+// 下载音乐
+export const download = (url) => axios({
+  method: 'get',
+  url: url,
+  responseType: 'blob'
+})
