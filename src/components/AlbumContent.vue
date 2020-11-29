@@ -2,6 +2,7 @@
   <div class="content">
     <h1 class="title">
       <slot name="title"></slot>
+      <hr/>
     </h1>
     <ul>
       <li>
@@ -31,6 +32,11 @@ import {mixin} from '../mixins'
 export default {
   name: 'AlbumContent',
   mixins: [mixin],
+  computed: {
+    ...mapGetters([
+      'listOfSongs'
+    ])
+  },
   props: [
     'songList'
   ]

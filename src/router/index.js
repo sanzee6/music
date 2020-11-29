@@ -69,7 +69,7 @@ export default new Router({
       path: '/song-list-album/:id',
       name: 'song-list-album',
       component: SongListAlbum
-    },
+    }
   ],
   scrollBehavior (to, from, savedPosition) {
     return { x: 0, y: 0 }
