@@ -4,6 +4,8 @@ import axios from 'axios'
 // ============歌手相关================
 // 查询歌手
 export const getAllSinger = () => get(`singer/allSinger`)
+// 根据性别查询
+export const getSingerOfSex = (sex) => get(`singer/singerOfSex?sex=${sex}`)
 
 // ============歌曲相关================
 // 根据歌手id查询歌曲
@@ -16,6 +18,10 @@ export const likeSongOfName = (keywords) => get(`song/likeSongOfName?songName=${
 // ============歌单相关================
 // 查询歌单
 export const getAllSongList = () => get(`songList/allSongList`)
+// 返回标题包含文字的歌单列表
+export const getSongListOfLikeTitle = (keywords) => get(`songList/likeTitle?title=${keywords}`)
+// 根据风格模糊查询歌单列表
+export const getSongListOfLikeStyle = (style) => get(`songList/likeStyle?style=${style}`)
 
 // ============歌单的歌曲相关============
 // 根据歌单id查询歌曲列表
@@ -28,6 +34,8 @@ export const getAllConsumer = () => get(`consumer/allConsumer`)
 export const SignUp = (params) => post(`/consumer/add`, params)
 // 登录
 export const loginIn = (params) => post(`/consumer/login`, params)
+// 根据用户ID查询改用户的信息
+export const getUserOfId = (id) => get(`/consumer/selectByPrimaryKey?id=${id}`)
 
 // 下载音乐
 export const download = (url) => axios({
@@ -55,3 +63,9 @@ export const getAllComment = (type, id) => {
     return get(`/comment/commentOfSongListId?songListId=${id}`)
   }
 }
+
+// ===============收藏===================
+// 新增收藏
+export const setCollect = (params) => post(`/collect/add`, params)
+// 指定用户的收藏列表
+export const getCollectOfUserId = (userId) => get(`/collect/collectOfUserId?userId=${userId}`)

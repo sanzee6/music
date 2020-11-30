@@ -7,7 +7,8 @@ const configure = {
     HOST: 'http://127.0.0.1:8888', // 后台访问的根目录
     activeName: '', // 当前选中的菜单名
     showAside: false, // 是否显示歌曲播放的列表
-    loginIn: false // 判断用户是否登录
+    loginIn: false, // 判断用户是否登录
+    isActive: false // 当然用户是否已经收藏
   },
   getters: {
     activeName: state => {
@@ -30,6 +31,13 @@ const configure = {
         loginIn = JSON.parse(window.sessionStorage.getItem('loginIn'))
       }
       return loginIn
+    },
+    isActive: state => {
+      let isActive = state.isActive
+      if (!isActive) {
+        isActive = JSON.parse(window.sessionStorage.getItem('isActive'))
+      }
+      return isActive
     }
   },
   mutations: {
@@ -44,6 +52,10 @@ const configure = {
     setLoginIn: (state, loginIn) => {
       state.setLoginIn = loginIn
       window.sessionStorage.setItem('loginIn', JSON.stringify(loginIn))
+    },
+    setIsActive: (state, isActive) => {
+      state.isActive = isActive
+      window.sessionStorage.setItem('isActive', JSON.stringify(isActive))
     }
   }
 }

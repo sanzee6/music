@@ -75,12 +75,23 @@ export default {
     }, false)
   },
   methods: {
+    // 提示信息
+    notify (title, type) {
+      this.$notify({
+        title: title,
+        type: type
+      })
+    },
     goHome () {
       this.$router.push({path: '/'})
     },
     goPage (path, name) {
-      this.$store.commit('setActiveName', name)
-      this.$router.push({path: path})
+      if (!this.loginIn && path === '/my-music') {
+        this.notify('请先登录', 'warning')
+      } else {
+        this.$store.commit('setActiveName', name)
+        this.$router.push({path: path})
+      }
     },
     goSearch () {
       this.$router.push({path: '/search', query: {keywords: this.keywords}})
@@ -92,6 +103,7 @@ export default {
     goMenuList (path) {
       if (path === 0) { // 等于0退出的时候
         this.$store.commit('setLoginIn', false)
+        this.$store.commit('setIsActive', false)
         this.$router.go(0) // 刷新下页面
       } else {
         this.$router.push({path: path})

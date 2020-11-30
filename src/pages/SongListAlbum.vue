@@ -41,6 +41,8 @@
           <template slot="title">歌单</template>
         </album-content>
       </div>
+      <!--评论-->
+      <comment :playId="songListId" :type="1"></comment>
     </div>
   </div>
 </template>
@@ -50,10 +52,13 @@ import {mixin} from '../mixins'
 import {mapGetters} from 'vuex'
 import {listSongDetail, songOfSongId, setRank, getRankOfSongListId} from '../api/index'
 import AlbumContent from '../components/AlbumContent'
+import Comment from '../components/Comment'
 export default {
   name: 'SongListAlbum',
   mixins: [mixin],
-  components: {AlbumContent},
+  components: {
+    AlbumContent,
+    Comment},
   data () {
     return {
       songLists: [], // 当前页面需要展示的歌曲列表

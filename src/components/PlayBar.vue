@@ -66,8 +66,8 @@
         </div>
 
         <!--收藏-->
-        <div class="item item-volume">
-          <svg class="icon">
+        <div class="item item-volume" @click="collection">
+          <svg class="icon" :class="{active:isActive}">
             <use xlink:href="#icon-xihuan-shi"></use>
           </svg>
         </div>
@@ -93,7 +93,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import {download} from '../api/index'
+import {download, setCollect, getCollectOfUserId} from '../api/index'
 
 export default {
   data () {
@@ -123,7 +123,10 @@ export default {
       'showAside', // 播放中的歌曲列表
       'listIndex', // 歌曲在歌单中的位置
       'listOfSongs', // 当前歌单列表
-      'autoNext' // 自动播放下一首
+      'autoNext', // 自动播放下一首
+      'loginIn', // 登录状态
+      'userId', // 当前登录用户的id
+      'isActive'
     ])
   },
   watch: {
@@ -163,6 +166,13 @@ export default {
     }, false)
   },
   methods: {
+    // 提示信息
+    notify (title, type) {
+      this.$notify({
+        title: title,
+        type: type
+      })
+    },
     // 音乐播放暂停
     togglePlay () {
       if (this.isPlay) {
@@ -285,6 +295,18 @@ export default {
         this.$store.commit('setTitle', this.replaceFName(this.listOfSongs[this.listIndex].name)) //  歌名
         this.$store.commit('setArtist', this.replaceLName(this.listOfSongs[this.listIndex].name)) // 歌手名
         this.$store.commit('setLyric', this.parseLyric(this.listOfSongs[this.listIndex].lyric))
+        this.$store.commit('setIsActive', false)
+        if (this.loginIn) {
+          getCollectOfUserId(this.userId)
+            .then(res => {
+              for (let item of res) {
+                if (item.songId === id) {
+                  this.$store.commit('setIsActive', true)
+                  break
+                }
+              }
+            })
+        }
       }
     },
 
@@ -351,6 +373,28 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    // 收藏
+    collection () {
+      if (this.loginIn) {
+        var params = new URLSearchParams()
+        params.append('userId', this.userId)
+        params.append('type', 0)
+        params.append('songId', this.id)
+        setCollect(params)
+          .then(res => {
+            if (res.code === 1) {
+              this.$store.commit('setIsActive', true)
+              this.notify('收藏成功', 'success')
+            } else if (res.code === 2) {
+              this.notify('已收藏', 'warning')
+            } else {
+              this.notify('收藏失败', 'error')
+            }
+          })
+      } else {
+        this.notify('请先登录', 'warning')
+      }
     }
   }
 

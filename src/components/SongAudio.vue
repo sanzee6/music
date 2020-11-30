@@ -71,6 +71,6 @@ export default {
 <style scoped>
 .song-audio{
   /*display: none;*/
-  display: inline;
+  display: none;
 }
 </style>

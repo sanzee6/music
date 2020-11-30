@@ -15,13 +15,17 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {getCollectOfUserId} from '../api/index'
 export default {
   name: 'TheAside',
   computed: {
     ...mapGetters([
       'showAside', // 播放中的歌曲列表
       'listOfSongs', // 当前歌曲列表
-      'id' // 播放中的音乐
+      'id', // 播放中的音乐
+      'loginIn', // 登录状态
+      'userId', // 当前登录用户的id
+      'isActive'
     ])
   },
   mounted () {
@@ -49,6 +53,18 @@ export default {
       this.$store.commit('setTitle', this.replaceFName(name)) //  歌名
       this.$store.commit('setArtist', this.replaceLName(name)) // 歌手名
       this.$store.commit('setLyric', this.parseLyric(lyric))
+      this.$store.commit('setIsActive', false)
+      if (this.loginIn) {
+        getCollectOfUserId(this.userId)
+          .then(res => {
+            for (let item of res) {
+              if (item.songId === id) {
+                this.$store.commit('setIsActive', true)
+                break
+              }
+            }
+          })
+      }
     },
     parseLyric (text) {
       let lines = text.split('\n') // 将歌词按行分解成数组
