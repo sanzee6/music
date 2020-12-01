@@ -27,6 +27,7 @@
       </li>
     </ul>
     <div class="header-right" v-show="loginIn">
+      <!--头像-->
       <div id="user">
         <img :src="attachImageUrl(avator)">
       </div>
@@ -88,6 +89,7 @@ export default {
     goPage (path, name) {
       if (!this.loginIn && path === '/my-music') {
         this.notify('请先登录', 'warning')
+        this.$router.push({path: '/login-in'})
       } else {
         this.$store.commit('setActiveName', name)
         this.$router.push({path: path})

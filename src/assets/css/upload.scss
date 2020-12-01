@@ -2,7 +2,11 @@
 @import "global.scss";
 
 .upload {
-  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 90%;
+  margin-top: 80px;
   .title {
     height: 50px;
     line-height: 50px;
@@ -15,7 +19,21 @@
     width: 98%;
   }
   .section {
-    height: 400px;
-    @include layout(center, center);
+    height: 180px;
+    //@include layout(center, center);
+  }
+  #user {
+    overflow: hidden;
+    //width: $header-user-width;
+    //height: $header-user-height;
+    width: 150px;
+    height: 150px;
+    border-radius: 25%;
+    margin: 50px;
+
+    cursor: pointer;
+    img {
+      width: 100%;
+    }
   }
 }

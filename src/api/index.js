@@ -36,6 +36,8 @@ export const SignUp = (params) => post(`/consumer/add`, params)
 export const loginIn = (params) => post(`/consumer/login`, params)
 // 根据用户ID查询改用户的信息
 export const getUserOfId = (id) => get(`/consumer/selectByPrimaryKey?id=${id}`)
+// 更新用户信息
+export const updateUserMsg = (params) => post(`/consumer/update`, params)
 
 // 下载音乐
 export const download = (url) => axios({
