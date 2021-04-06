@@ -22,7 +22,7 @@
         <h2>{{singer.name}}</h2>
         <span>{{singer.introduction}}</span>
       </div>
-      <!--评论-->
+      <!--歌单-->
       <div class="content">
         <album-content :songList="listOfSongs">
           <template slot="title">歌单</template>
