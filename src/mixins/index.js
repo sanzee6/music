@@ -4,7 +4,7 @@ export const mixin = {
   computed: {
     ...mapGetters([
       'loginIn', // 登录状态
-      'userId', // 当前登录用户的id
+      'userId' // 当前登录用户的id
     ])
   },
   methods: {
@@ -54,6 +54,7 @@ export const mixin = {
       this.$store.commit('setPicUrl', this.$store.state.configure.HOST + pic)
       this.$store.commit('setListIndex', index)
       this.$store.commit('setTitle', this.replaceFName(name)) //  歌名
+      localStorage.setItem('songTitle', this.replaceFName(name))
       this.$store.commit('setArtist', this.replaceLName(name)) // 歌手名
       this.$store.commit('setLyric', this.parseLyric(lyric))
       this.$store.commit('setIsActive', false)

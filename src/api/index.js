@@ -14,6 +14,8 @@ export const songOfSingerId = (id) => get(`song/singer/detail?singerId=${id}`)
 export const songOfSongId = (id) => get(`song/detail?songId=${id}`)
 // 根据歌手名字模糊查询歌曲
 export const likeSongOfName = (keywords) => get(`song/likeSongOfName?songName=${keywords}`)
+// 根据歌曲名查询相关tag的歌曲
+export const songOfSongTag = (songName) => get(`song/songOfSongTag?songName=${songName}`)
 
 // ============歌单相关================
 // 查询歌单
